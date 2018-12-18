@@ -3,7 +3,11 @@
     <script type="text/javascript">
       function createBin() {
         $.ajax({'url': '/api/v1/bins', 'type': 'POST', 
-          'data': {'private': $('#private').prop("checked")},
+          'data': {
+            'private': $('#private').prop("checked"), 
+            'name': $('#name').val(),
+            'ttl': $('#ttl').val()
+          },
           'success': function(data) {
             window.location.href = "/"+data['name']+"?inspect";
           }
@@ -22,6 +26,18 @@
             <form class="form-inline">
               <p class="banner-button">
                 <a class="btn btn-success btn-large" onclick="createBin()"><i class="icon-plus-sign"></i> Create a RequestBin</a>
+              </p>
+
+              <p class="banner-option">
+                <label class="text" title="Bin name">
+                  <input id="name" type="text" placeholder="Bin name" /> &nbsp;<small>(If empty, a hash will be used)</small>
+                </label>
+              </p>
+
+              <p class="banner-option">
+                <label class="text" title="Bin name">
+                  <input id="ttl" type="number" placeholder="TTL" /> &nbsp;<small>(If empty, default TTL will be used)</small>
+                </label>
               </p>
               
               <p class="banner-option">

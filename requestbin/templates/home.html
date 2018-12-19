@@ -6,12 +6,19 @@
           'data': {
             'private': $('#private').prop("checked"), 
             'name': $('#name').val(),
-            'ttl': $('#ttl').val()
+            'ttl': $('#ttl').val(),
+            'expires': $('#expires').prop("checked")
           },
           'success': function(data) {
             window.location.href = "/"+data['name']+"?inspect";
           }
         });
+      }
+
+      function expiration() {
+        var value = $('#expires').prop("checked")
+        if (value) $('#ttl-block').show()
+        else $('#ttl-block').hide()
       }
     </script>
 {% endblock %}
@@ -24,10 +31,6 @@
               Use RequestBin to see what your HTTP client is sending or to inspect and debug webhook requests.</h3>
 
             <form class="form-inline">
-              <p class="banner-button">
-                <a class="btn btn-success btn-large" onclick="createBin()"><i class="icon-plus-sign"></i> Create a RequestBin</a>
-              </p>
-
               <p class="banner-option">
                 <label class="text" title="Bin name">
                   <input id="name" type="text" placeholder="Bin name" /> &nbsp;<small>(If empty, a hash will be used)</small>
@@ -35,15 +38,24 @@
               </p>
 
               <p class="banner-option">
+                <label class="checkbox" title="Bin expires?">
+                  <input id="expires" type="checkbox" onclick="expiration()"/> &nbsp;Expires?
+                </label>
+              </p>
+
+              <p class="banner-option" style="display:none;" id="ttl-block">
                 <label class="text" title="Bin name">
                   <input id="ttl" type="number" placeholder="TTL" /> &nbsp;<small>(If empty, default TTL will be used)</small>
                 </label>
               </p>
-              
+
               <p class="banner-option">
                 <label class="checkbox" title="Private bins can only be viewed by you using a browser cookie">
                   <input id="private" type="checkbox" /> &nbsp;Private <small>(only viewable from this browser)</small>
                 </label>
+              </p>
+              <p class="banner-button">
+                <a class="btn btn-success btn-large" onclick="createBin()"><i class="icon-plus-sign"></i> Create a RequestBin</a>
               </p>
             </form>
         </div>

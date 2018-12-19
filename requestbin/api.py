@@ -19,13 +19,16 @@ def _response(object, code=200):
 @app.endpoint('api.bins')
 def bins():
     private = request.form.get('private') in ['true', 'on']
+    expires = request.form.get('expires') in ['true', 'on']
     name = request.form.get('name')
-    ttl = int(request.form.get('ttl'))
+    ttl = request.form.get('ttl')
+    if ttl:
+        ttl = int(ttl)
 
-    if ttl > 0:
-        ttl = ttl*3600
-    elif ttl == 0:
-        ttl = None
+    if expires:
+        ttl = ttl*3600 if ttl > 0 else None
+    else:
+        ttl = -1
     bin = db.create_bin(private, name, ttl)
     if bin.private:
         session[bin.name] = bin.secret_key
